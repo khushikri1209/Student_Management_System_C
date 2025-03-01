@@ -115,3 +115,28 @@ void searchStudent(){
     if(!found)printf("Students not found!\n");
     fclose(fp);
 }
+
+//delete students
+
+void deleteStudents(){
+    FILE*fp=fopen(FILENAME,"rb");
+    if(!fp){
+        print("No records found!\n");
+        return;
+    }
+    FILE*temp=fopen("temp.dat","wb");
+    int id,found=0;
+    struct Students s;
+    printf("Enter Student Id to delete: ");
+    scanf("%d",&id);
+    while(fread(&s,size(s), 1, fp)){
+        if(s.id !=id)fwrite(&s,sizeof(s),1,temp);
+        else found=1;
+
+    }
+    fclose(fp);
+    fclose(temp);
+    remove(FILENAME);
+    rename("temp.dat",FILENAME);
+    if(found)printf("Student not found!\n");
+}
